@@ -1,5 +1,6 @@
 const express =require("express")
 const auth =require("./auth")
+const connectDB=require("./config/database")
  
 const app =express();
 
@@ -55,4 +56,10 @@ app.use("/",(err,req,res,next)=>{
     if(err)
         res.send("error: "+err.message)
 })
+connectDB().then(()=>{
+    console.log("server conncted")
 app.listen(3333,()=>{console.log("server is listen now")})
+})
+.catch(()=>{
+console.error("not connected")
+})
