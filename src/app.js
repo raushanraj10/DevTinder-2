@@ -3,6 +3,10 @@ const auth =require("./auth")
  
 const app =express();
 
+app.all("/ping",(req,res)=>{
+    res.send("i am raushan")
+})
+
 // app.use("/admin",(req,res,next)=>{
 //     const password="xxxx";
 //     if(password==="xxxx")
