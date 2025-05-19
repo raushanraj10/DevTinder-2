@@ -1,56 +1,62 @@
 const express =require("express")
 const auth =require("./auth")
 const connectDB=require("./config/database")
+const {ModelUser}=require("./models/schemas")
  
 const app =express();
+app.use(express.json())
 
-app.all("/ping",(req,res)=>{
-    res.send("i am raushan")
-})
-
-// app.use("/admin",(req,res,next)=>{
-//     const password="xxxx";
-//     if(password==="xxxx")
-//         next();
-//     else
-//     res.status(404).send("authentication failed")
-// })
-app.get("/admin/userprofile",auth,(req,res)=>{
-    // throw ("g")
-
-    // throw new Error("error in file")
-    // ye error app.use()jo last me likha h usme show krega
-    res.send("user profile")
-})
-app.delete("/admin/deleteuser",auth,(req,res)=>{
-    try{
-        // throw new Error("hfjkd")
-
-        // throw("fdhisd")
-        res.send("user deleted")
-    }
-    catch(err){
-        res.send("ERROR: "+err.message)
-    }
-   
-})
-
-app.get("/user",(req,res,next)=>{
-   const id= req.params
-    console.log(req.query)
-        next();
-    res.send("hi there")
-        //  next();
-},(req,res)=>{
-    console.log("dhf")
-    res.send("hdfshf")
-})
-
-// const userobj={
-    //     firsrName:"Raushan",
+app.post("/singup",async (req,res)=>{
+    // const userObj={
+    //     firstName:"Raushan",
     //     lastName:"Raj",
-    //     age:25
+    //     age:45,
+    //     emailId:"raushan@123",
+    //     password:"1234"
     // }
+    console.log(req.body)
+    const user=new ModelUser(req.body)
+    
+    await user.save();
+    res.send("data of user saved")
+})
+
+app.get("/getuniqueuser",async (req,res)=>{
+    const requestedemail=req.body.emailId
+    console.log(requestedemail)
+
+    const userprofile=await ModelUser.findOne({emailId:requestedemail})
+    res.send(userprofile)
+})
+
+app.get("/getalluser",async (req,res)=>{
+    // const requestedemail=req.body.emailId
+    // console.log(requestedemail)
+
+    const userprofile=await ModelUser.find({})
+    res.send(userprofile)
+})
+
+app.delete("/deleteuser/:userid",async (req,res)=>{
+    // const requestedemailforuser=req.body.emailId
+    //userid se delete krne ka start kiy h
+    const requstedidfordelete=req.params.userid
+    // console.log(requstedidfordelete)
+    // console.log(requstedidfordelete)
+    // const requestedidfordelete2=req.body.idfordelete
+    const deletion=await ModelUser.findByIdAndDelete({_id:requstedidfordelete})
+    // const deletion2=await ModelUser.findByIdAndDelete({_id:requestedidfordelete2})
+
+    res.send("deleted")
+
+})
+
+app.patch("/updateuser/:useridforupdate",async (req,res)=>{
+   const userid=req.params.useridforupdate;
+   const data=req.body
+   await ModelUser.findByIdAndUpdate({_id:userid},data,{returnDocument:"after"})
+   res.send("updated")
+})
 
 app.use("/",(err,req,res,next)=>{
     if(err)
