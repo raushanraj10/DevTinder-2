@@ -2,6 +2,20 @@ const express =require("express")
  
 const app =express();
 
+app.use("/admin",(req,res,next)=>{
+    const password="xxxx";
+    if(password==="xxxx")
+        next();
+    else
+    res.status(404).send("authentication failed")
+})
+app.get("/admin/userprofile",(req,res)=>{
+    res.send("user profile")
+})
+app.delete("/admin/deleteuser",(req,res)=>{
+    res.send("user deleted")
+})
+
 app.get("/user",(req,res,next)=>{
    const id= req.params
     console.log(req.query)
