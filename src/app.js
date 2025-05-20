@@ -54,13 +54,13 @@ app.delete("/deleteuser/:userid",async (req,res)=>{
 app.patch("/updateuser/:useridforupdate",async (req,res)=>{
    const userid=req.params.useridforupdate;
    const data=req.body
-   await ModelUser.findByIdAndUpdate({_id:userid},data,{returnDocument:"after"})
+   await ModelUser.findByIdAndUpdate({_id:userid},data,{returnDocument:"after",runValidators:true})
    res.send("updated")
 })
 
 app.use("/",(err,req,res,next)=>{
     if(err)
-        res.send("error: "+err.message)
+        res.send("Error: "+err.message)
 })
 connectDB().then(()=>{
     console.log("server conncted")
