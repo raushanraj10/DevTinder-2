@@ -2,9 +2,13 @@ const express =require("express")
 const auth =require("./auth")
 const connectDB=require("./config/database")
 const {ModelUser}=require("./models/schemas")
+const validationSignUp=require("./utils/validation")
+const bcrypt=require("bcrypt")
  
 const app =express();
 app.use(express.json())
+
+// console.log("chl rha h")
 
 app.post("/singup",async (req,res)=>{
     // const userObj={
@@ -14,10 +18,26 @@ app.post("/singup",async (req,res)=>{
     //     emailId:"raushan@123",
     //     password:"1234"
     // }
-    console.log(req.body)
-    const user=new ModelUser(req.body)
-    
+    validationSignUp(req)
+
+    const {firstName,lastName,age,gender,emailId,password,skills}=req.body
+
+    console.log(password)
+    const passwordHash=await bcrypt.hash(password,10)
+
+    console.log(passwordHash)
+    const user=new ModelUser({
+        firstName,
+        lastName,
+        age,
+        gender,
+        emailId,
+        skills,
+        password:passwordHash,
+    })
+   
     await user.save();
+  
     res.send("data of user saved")
 })
 
