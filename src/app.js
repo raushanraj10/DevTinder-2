@@ -10,6 +10,26 @@ app.use(express.json())
 
 // console.log("chl rha h")
 
+
+app.post("/login",async (req,res)=>{
+    const {emailId,password}=req.body
+  
+
+    const logger= await ModelUser.findOne({emailId:emailId})
+    
+    if(!logger)
+        throw new Error("email not found")
+   
+    const checkpassword= await bcrypt.compare(password,logger.password)
+    // console.log(checkpassword)
+    if(checkpassword)
+        throw new Error("password incorret please re enter your password")
+
+    res.send("login successfully")
+
+
+})
+
 app.post("/singup",async (req,res)=>{
     // const userObj={
     //     firstName:"Raushan",
