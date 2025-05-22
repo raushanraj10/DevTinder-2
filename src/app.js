@@ -33,14 +33,15 @@ app.post("/login",async (req,res)=>{
     if(!logger)
     throw new Error("email not found")
    
-    const checkpassword= await bcrypt.compare(password,logger.password)
+    // const checkpassword= await bcrypt.compare(password,logger.password)
+    const checkpassword=logger.validatepassword(password)
     // console.log(checkpassword)
 
-    if(checkpassword)
+    if(!checkpassword)
         throw new Error("password incorret please re enter your password")
 
-    const token=await jwt.sign({_id:logger._id},"Devtinder2",{expiresIn:"1h"})
-    console.log(token)
+    // const token=await jwt.sign({_id:logger._id},"Devtinder2",{expiresIn:"1h"})
+    const token=await logger.gettoken()
 
     res.cookie("token",token)
     res.send("login successfull")
@@ -114,6 +115,12 @@ app.patch("/updateuser/:useridforupdate",userauth,async (req,res)=>{
    const data=req.body
    await ModelUser.findByIdAndUpdate({_id:userid},data,{returnDocument:"after",runValidators:true})
    res.send("updated")
+})
+
+app.post("/sendrequest",userauth,(req,res)=>{
+    console.log("sending request")
+    const logger=req.loggedUserdata
+    res.send(logger.firstName)
 })
 
 app.use("/",(err,req,res,next)=>{
