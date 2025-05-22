@@ -4,28 +4,46 @@ const connectDB=require("./config/database")
 const {ModelUser}=require("./models/schemas")
 const validationSignUp=require("./utils/validation")
 const bcrypt=require("bcrypt")
+const cookieParser = require("cookie-parser")
+const jwt=require("jsonwebtoken")
+const userauth=require("./utils/auth")
  
 const app =express();
 app.use(express.json())
+app.use(cookieParser())
+
+const USE_SAFE_DATA="firstName lastName age about skills"
 
 // console.log("chl rha h")
 
-
+app.get("/profile",userauth,async(req,res)=>{
+ try{
+    const loggedUser=req.loggedUserdata
+  
+    res.send(loggedUser)}
+    catch(err){
+        res.send("Error: "+err.message)
+    }
+})
 app.post("/login",async (req,res)=>{
     const {emailId,password}=req.body
   
-
     const logger= await ModelUser.findOne({emailId:emailId})
-    
+
     if(!logger)
-        throw new Error("email not found")
+    throw new Error("email not found")
    
     const checkpassword= await bcrypt.compare(password,logger.password)
     // console.log(checkpassword)
+
     if(checkpassword)
         throw new Error("password incorret please re enter your password")
 
-    res.send("login successfully")
+    const token=await jwt.sign({_id:logger._id},"Devtinder2",{expiresIn:"1h"})
+    console.log(token)
+
+    res.cookie("token",token)
+    res.send("login successfull")
 
 
 })
@@ -91,7 +109,7 @@ app.delete("/deleteuser/:userid",async (req,res)=>{
 
 })
 
-app.patch("/updateuser/:useridforupdate",async (req,res)=>{
+app.patch("/updateuser/:useridforupdate",userauth,async (req,res)=>{
    const userid=req.params.useridforupdate;
    const data=req.body
    await ModelUser.findByIdAndUpdate({_id:userid},data,{returnDocument:"after",runValidators:true})
