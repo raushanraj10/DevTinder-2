@@ -1,4 +1,5 @@
 const validator=require("validator")
+
 const validationSignUp=(req)=>{
 
   const {firstName,lastName,emailId,age,password,skills}=req.body
@@ -20,4 +21,13 @@ const validationSignUp=(req)=>{
 
 
 }
-module.exports=validationSignUp
+
+const validationprofiledata=(req)=>{
+  const allowedchange=["age","gender","about","skills"]
+  const isallowed=Object.keys(req.body).every((elem)=>allowedchange.includes(elem))
+    // console.log(req.body)
+    // console.log(isallowed)
+    return isallowed
+  
+}
+module.exports={validationprofiledata,validationSignUp}

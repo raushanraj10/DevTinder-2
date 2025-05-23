@@ -68,8 +68,8 @@ userSchema.methods.gettoken=async function(){
 }
 
 userSchema.methods.validatepassword=async function(password){
-    // console.log(password)
-    //   console.log(this.password)
+    console.log(password)
+      console.log(this.password)
      const checkpassword= await bcrypt.compare(password,this.password)
     //  console.log(checkpassword)
      return checkpassword
