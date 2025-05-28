@@ -9,6 +9,7 @@ const jwt=require("jsonwebtoken")
 const userauth=require("./utils/auth")
 const authRouter=require("./routes/auth")
 const profileRouter=require("./routes/profile")
+const requestRouter = require("./routes/request")
  
 const app =express();
 app.use(express.json())
@@ -19,6 +20,7 @@ const USE_SAFE_DATA="firstName lastName age about skills"
 // console.log("chl rha h")
 app.use("/",authRouter)
 app.use("/",profileRouter)
+app.use("/",requestRouter)
 
 
 

@@ -12,10 +12,10 @@ const connectionSchema=mongoose.Schema({
     status:{
         type:String,
         require:true,
-        enum:{
-           value: ["ignored","interested","accepted","rejected"],
-           message:`${value} valued not define`
-        }
+        // enum:{
+        //    values:["ignored","interested","accepted","rejected"],
+        //    message:`{VALUE} valued not define`,
+        // }
     }
 },{timestamps:true})
 
