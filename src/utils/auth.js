@@ -6,6 +6,9 @@ const {ModelUser}=require("../models/schemas")
 
 const userauth= async (req,res,next)=>{
    const {token}=req.cookies
+//    console.log(token)
+   if(!token||token===null)
+    return res.status(401).send("please login")
     
     const decoderandcompare=await jwt.verify(token,"Devtinder2")
   

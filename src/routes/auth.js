@@ -1,6 +1,6 @@
 const express=require("express")
 const {ModelUser}=require("../models/schemas")
-const validationSignUp=require("../utils/validation")
+const {validationSignUp}=require("../utils/validation")
 const bcrypt=require("bcrypt")
 
 
@@ -10,24 +10,27 @@ const authRouter=express.Router();
 
 authRouter.post("/login",async (req,res)=>{
     const {emailId,password}=req.body
+    // console.log("from req body "+password)
+    
   
     const logger= await ModelUser.findOne({emailId:emailId})
 
     if(!logger)
-    throw new Error("email not found")
+    res.status(401).send("invalid credentials")
+    // console.log("from login api "+logger.password)
    
     // const checkpassword= await bcrypt.compare(password,logger.password)
-    const checkpassword=logger.validatepassword(password)
+    const checkpassword=await logger.validatepassword(password)
     // console.log(checkpassword)
 
     if(!checkpassword)
-        throw new Error("password incorret please re enter your password")
+        return res.status(401).send("invalid credentialsnp")
 
     // const token=await jwt.sign({_id:logger._id},"Devtinder2",{expiresIn:"1h"})
     const token=await logger.gettoken()
 
     res.cookie("token",token)
-    res.send("login successfull")
+    res.send(logger)
 
 
 })
@@ -66,7 +69,7 @@ authRouter.post("/singup",async (req,res)=>{
 
 authRouter.post("/logout",async (req,res)=>{
     res.cookie("token",null)
-    console.log(req.cookie)
+    console.log(req.cookies)
     res.send("logout successfully")
 })
 

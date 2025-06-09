@@ -23,10 +23,11 @@ const validationSignUp=(req)=>{
 }
 
 const validationprofiledata=(req)=>{
-  const allowedchange=["age","gender","about","skills"]
+  console.log("juksfhdkjh")
+  const allowedchange=["_id,firstName","lastName","age","gender","about","skills","photourl"]
   const isallowed=Object.keys(req.body).every((elem)=>allowedchange.includes(elem))
     // console.log(req.body)
-    // console.log(isallowed)
+    console.log(isallowed)
     return isallowed
   
 }
