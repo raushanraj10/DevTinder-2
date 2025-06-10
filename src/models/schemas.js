@@ -8,12 +8,14 @@ const userSchema= new mongoose.Schema({
     firstName:{
         type:String,
         required:true,
+        uppercase:true
         // minLength:2,
     },
 
     lastName:{
         type:String,
         required:true,
+         uppercase:true
         // minLength:2,
     },
  
@@ -23,44 +25,56 @@ const userSchema= new mongoose.Schema({
         unique:true,
         lowercase:true,
         trim:true,
-        // validate(value){
-        //  if(!validator.isEmail(value))
-        //     throw new Error("email id is not correct")
-        // },
+        validate(value){
+         if(!validator.isEmail(value))
+            throw new Error("email id is not correct")
+        },
     },
  
  
     age:{
         type:Number,
+        default:0,
+        validate(value){
+            if(value<0)
+                throw new Error("Give Right Input Of Age")
+        }
         // min:10,
+    
         // max:50,
     },
-    password:{
-        type:String
-    },
+
+    password: {
+    type: String,
+    required: true,
+  },
+
      skills:{
-        type:[String]
+        type:[String],
+        default:["Reading"],
+         uppercase:true,
     },
     about:{
         type:String,
-        default:"this is default about for all"
+        default:"this is default about for all",
+         uppercase:true,
     },
     gender:{
         type:String,
         // validate(value)
         // {
-        //     if(!["male","female"].includes(value))
+        //     if(!["male","female,other"].includes(value))
         //         throw new Error("gender not available")
         // },
-        validate(value)
-        {
-            if(!(value==="male"||value==="female"))
-                throw new Error("gender not available")
-        },
+        // validate(value)
+        // {
+        //     if(!(value==="Male"||value==="Female"||value==="Other"))
+        //         throw new Error("gender not available")
+        // },
     },
     photourl:{
         type:String,
-        default:"https://cdn.pixabay.com/photo/2019/01/28/02/10/girl-taking-photo-3959468_1280.jpg"
+        default:"https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg"
     },
 
  

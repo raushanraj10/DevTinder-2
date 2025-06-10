@@ -11,7 +11,7 @@ requestRouter.post("/request/send/:status/:touserId",userauth,async (req,res)=>{
     const fromuserId=req.loggedUserdata._id
     // console.log(touserId.toString())
      const {status,touserId}=req.params
-     console.log(touserId.toString())
+    //  console.log(touserId.toString())
      if(fromuserId.toString()===touserId.toString())
         return  res.status(401).send("u cant't send request to urself")
     //  console.log(touserId)

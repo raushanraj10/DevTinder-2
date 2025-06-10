@@ -56,7 +56,7 @@ userRouter.get("/user/request/recieved",userauth,async (req,res)=>{
         // const senderprofile=await ModelUser.find({
         //     checkRecievedRequest.fromuserId
         // })
-        console.log(checkRecievedRequest)
+        // console.log(checkRecievedRequest)
         res.send(checkRecievedRequest)
 
     }catch(err){}
@@ -64,7 +64,7 @@ userRouter.get("/user/request/recieved",userauth,async (req,res)=>{
 
 userRouter.get("/user/review/connection",userauth,async (req,res)=>{
     const logger=req.loggedUserdata
-    console.log(logger._id)
+    // console.log(logger._id)
     const checkRequest=await ConnectionModel.find({
         $or:[{fromuserId:logger._id,status:"accepted"},
             {touserId:logger._id,status:"accepted"}
@@ -73,13 +73,24 @@ userRouter.get("/user/review/connection",userauth,async (req,res)=>{
     
     if(!checkRequest)
         return res.send("there is no connection in ur profile")
+    
+    // const check = checkRequest.map((ele)=>{console.log(ele.fromuserId._id)})
+    // console.log(" djsikfj")
+    //   const checkin = checkRequest.map((ele)=>{console.log(ele.touserId._id)})
+
+    // console.log(checkRequest.length)
+
+    // const check=await ConnectionModel.find({fromuserId:logger._id,touserId:logger._id})
+    // console.log(check.length)
 
     const data=checkRequest.map((ele)=>{
-        if(ele.fromuserId.toString()===logger._id.toString())
-            return ele.touserId
+        if(ele.fromuserId._id.toString()===logger._id.toString()){
+        //    { console.log(ele.fromuserId._id);
+            return ele.touserId}
+        // console.log(ele.touserId._id)
         return ele.fromuserId
     })
-
+    // console.log(data.length)
     res.send(data)
 })
 module.exports=userRouter

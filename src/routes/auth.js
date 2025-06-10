@@ -35,7 +35,7 @@ authRouter.post("/login",async (req,res)=>{
 
 })
 
-authRouter.post("/singup",async (req,res)=>{
+authRouter.post("/signup",async (req,res)=>{
     // const userObj={
     //     firstName:"Raushan",
     //     lastName:"Raj",
@@ -43,14 +43,14 @@ authRouter.post("/singup",async (req,res)=>{
     //     emailId:"raushan@123",
     //     password:"1234"
     // }
-    validationSignUp(req)
+    // validationSignUp(req.body)
 
-    const {firstName,lastName,age,gender,emailId,password,skills}=req.body
-
-    console.log(password)
+    const {firstName,lastName,age,gender,emailId,password,skills,about}=req.body
+    // console.log(typeof(req.body))
+    // console.log(password)
     const passwordHash=await bcrypt.hash(password,10)
 
-    console.log(passwordHash)
+    // console.log(passwordHash)
     const user=new ModelUser({
         firstName,
         lastName,
@@ -58,6 +58,7 @@ authRouter.post("/singup",async (req,res)=>{
         gender,
         emailId,
         skills,
+        about,
         password:passwordHash,
     })
    
@@ -68,8 +69,8 @@ authRouter.post("/singup",async (req,res)=>{
 
 
 authRouter.post("/logout",async (req,res)=>{
-    res.cookie("token",null)
-    console.log(req.cookies)
+    res.cookie("token","",{ maxAge: 0,secure: true,})
+    // console.log(req.cookies)
     res.send("logout successfully")
 })
 

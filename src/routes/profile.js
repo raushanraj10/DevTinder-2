@@ -13,7 +13,8 @@ const profileRouter=express.Router();
 profileRouter.patch("/profile/edit",userauth,async (req,res)=>{
     try{
         // console.log("ahsjdfh  ")
-        // if(!validationprofiledata(req))
+        // console.log(req.body)
+        // if(!validationprofiledata(req.body))
         //     throw new Error("not able to edit provide right input")
         const loggedUser=req.loggedUserdata
     //    console.log(loggedUser)
