@@ -8,21 +8,30 @@ const userSchema= new mongoose.Schema({
     firstName:{
         type:String,
         required:true,
-        uppercase:true
+        uppercase:true,
+        validate(value){
+            if(!value){
+                throw new Error("please provide first name")
+            }
+        }
         // minLength:2,
     },
 
     lastName:{
         type:String,
         required:true,
-         uppercase:true
+         uppercase:true,
+          validate(value){
+            if(!value){
+                throw new Error("please provide last name")
+            }
+        }
         // minLength:2,
     },
  
- 
     emailId:{
         type:String,
-        unique:true,
+        // unique:true,
         lowercase:true,
         trim:true,
         validate(value){
@@ -47,7 +56,12 @@ const userSchema= new mongoose.Schema({
     password: {
     type: String,
     required: true,
+    validate(value){
+            if(!value){
+                throw new Error("please provide password")
+            }
   },
+},
 
      skills:{
         type:[String],
@@ -61,6 +75,7 @@ const userSchema= new mongoose.Schema({
     },
     gender:{
         type:String,
+        default:"Male",
         // validate(value)
         // {
         //     if(!["male","female,other"].includes(value))

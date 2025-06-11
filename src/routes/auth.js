@@ -44,8 +44,16 @@ authRouter.post("/signup",async (req,res)=>{
     //     password:"1234"
     // }
     // validationSignUp(req.body)
-
+  try{
     const {firstName,lastName,age,gender,emailId,password,skills,about}=req.body
+    // console.log(emailId)
+    const checkemailId=await ModelUser.findOne({emailId:emailId});
+    if(checkemailId)
+        {
+            // console.log(checkemailId)
+            return res.send(5)
+            // console.log(emailId)
+        }
     // console.log(typeof(req.body))
     // console.log(password)
     const passwordHash=await bcrypt.hash(password,10)
@@ -64,7 +72,11 @@ authRouter.post("/signup",async (req,res)=>{
    
     await user.save();
   
-    res.send("data of user saved")
+    res.send("U Signed Up Please Login")}
+    catch(err){
+        // console.log("dfsadfasdfsdfggh")
+        res.send(err.message)
+    }
 })
 
 
