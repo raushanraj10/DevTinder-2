@@ -78,6 +78,8 @@ app.use("/",(err,req,res,next)=>{
     if(err)
         res.send("Error: "+err.message)
 })
+
+app.get("/",(req,res)=>{res.send("deployed successfully")})
 connectDB().then(()=>{
     console.log("server conncted")
 app.listen(3333,()=>{console.log("server is listen now")})
