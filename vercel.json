@@ -2,14 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "nodemon ./src/app.js", // or "server.js", or your main entry file
+      "src": "./src/app.js", 
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "nodemon ./src/app.js" // or "/index.js" if your entry point is not in the root
+      "dest": "./src/app.js" 
     }
   ]
 }
